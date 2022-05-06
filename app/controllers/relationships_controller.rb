@@ -4,14 +4,16 @@ class RelationshipsController < ApplicationController
 
   	def create
     	json_response({ status: false, message: "Already following." }, :bad_request) and return if current_user.following?(@tw_user)
-
     	@relationship = current_user.follow!(@tw_user)
-    	json_response({ status: true, message: "Successfully followed this user.", data: @relationship })
+    	if @relationship.id.nil?
+    		json_response({ status: false, message: "Can,t be the same person." })
+    	else
+    		json_response({ status: true, message: "Successfully followed this user.", data: @relationship })
+  		end
   	end
 
   	def destroy
     	@tw_user = Relationship.find(params[:id]).followed
-
     	@relationship = current_user.unfollow!(@tw_user)
     	json_response({ success: false, message: "Successfully unfollowed this user.", data: @relationship })
   	end

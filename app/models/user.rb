@@ -11,7 +11,7 @@ class User < ApplicationRecord
   #tweet relationship
   has_many :tweets, dependent: :destroy
 
-  #serializer
+  #serializer     
   def as_json(options = {})
     super(options.merge({ except: [:auth_token, :created_at, :updated_at] }))
   end
@@ -19,7 +19,7 @@ class User < ApplicationRecord
   # follow a user
   def follow!(tw_user)
     # following << tw_user
-    active_relationships.create(followed_id: tw_user.id)
+    active_relationships.create(followed_id: tw_user.id)  
   end
 
   # unfollow a user
@@ -40,7 +40,6 @@ class User < ApplicationRecord
 
   # Authorization token for api sessions
   before_create :generate_auth_token!
-
   # Function used to generate token for api authentication
   def generate_auth_token!
     begin
